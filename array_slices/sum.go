@@ -7,3 +7,10 @@ func Sum(numbers []int) int {
 	}
 	return total
 }
+
+func SumAll(numbers ...[]int) (total []int) {
+	for _, slice := range numbers {
+		total = append(total, Sum(slice))
+	}
+	return
+}
