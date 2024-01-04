@@ -1,7 +1,7 @@
 package main
 
 import (
-	"reflect"
+	"slices"
 	"testing"
 )
 
@@ -18,17 +18,32 @@ func TestSum(t *testing.T) {
 		}
 	})
 }
-func TestSumAll(t *testing.T) {
-	t.Run("Sum of all slices", func(t *testing.T) {
-		slice1 := []int{6, 2, 1}
-		slice2 := []int{36, 56, 5}
-		slice3 := []int{1, 25, 511}
 
-		got := SumAll(slice1, slice2, slice3)
-		want := []int{Sum(slice1), Sum(slice2), Sum(slice3)}
+func TestSumAllTails(t *testing.T) {
 
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("TestSumAll failed: got %v, want %v, given %v", got, want, []interface{}{slice1, slice2, slice3})
+	checkSums := func(t testing.TB, got, want []int) {
+		t.Helper()
+		if !slices.Equal(got, want) {
+			t.Errorf("got %d want %d", got, want)
 		}
+	}
+
+	t.Run("Sum of slices excluding head", func(t *testing.T) {
+		slice1 := []int{1, 5, 5, 5, 5}
+		slice2 := []int{1, 5, 5, 5}
+
+		got := SumAllTails(slice1, slice2)
+		want := []int{20, 15}
+
+		checkSums(t, got, want)
 	})
+
+	t.Run("Safely sum empty slices", func(t *testing.T) {
+
+		got := SumAllTails([]int{}, []int{0, 1})
+		want := []int{0, 1}
+
+		checkSums(t, got, want)
+	})
+
 }
