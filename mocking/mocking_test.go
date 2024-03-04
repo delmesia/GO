@@ -5,11 +5,12 @@ import (
 	"testing"
 )
 
-func TestCountdown(t *testing.T) {
+func TestCountDown(t *testing.T) {
+	// Buffer is used here instead of os.Stdout to capture the output
 	buffer := &bytes.Buffer{}
-	SpySleeper := &SpySleeper{}
+	spySleeper := &SpySleeper{}
 
-	Countdown(buffer, SpySleeper)
+	Countdown(buffer, spySleeper)
 
 	got := buffer.String()
 	want := `3
@@ -21,7 +22,8 @@ Go!`
 		t.Errorf("got %q want %q", got, want)
 	}
 
-	if SpySleeper.Calls != 3 {
-		t.Errorf("not enough calls to sleeper, want 3 got %d", SpySleeper.Calls)
+	if spySleeper.Calls != 3 {
+		t.Errorf("not enough calls to sleeper, want 3 got %d", spySleeper.Calls)
 	}
+
 }
